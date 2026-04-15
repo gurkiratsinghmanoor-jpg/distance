@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Distance Coaching Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --accent: #3b82f6;
+    --accent2: #06b6d4;
+    --accent3: #8b5cf6;
+    --text: #f0f4ff;
+    --muted: #8899bb;
+    --border: rgba(59,130,246,0.15);
+    --glow: rgba(59,130,246,0.3);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--accent2);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: all 0.15s ease;
+    mix-blend-mode: screen;
+  }
+
+  /* Animated background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* Orbs */
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(90px);
+    pointer-events: none;
+    z-index: 0;
+    animation: float 8s ease-in-out infinite;
+  }
+  .orb1 { width: 400px; height: 400px; background: rgba(59,130,246,0.15); top: -100px; left: -100px; animation-delay: 0s; }
+  .orb2 { width: 350px; height: 350px; background: rgba(139,92,246,0.12); bottom: 100px; right: -80px; animation-delay: 3s; }
+  .orb3 { width: 250px; height: 250px; background: rgba(6,182,212,0.10); top: 50%; left: 50%; animation-delay: 5s; }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) scale(1); }
+    50% { transform: translateY(-30px) scale(1.05); }
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    padding: 20px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(20px);
+    background: rgba(10,14,26,0.7);
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .nav-logo span {
+    background: linear-gradient(135deg, var(--accent2), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    position: relative;
+    transition: color 0.3s;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 1.5px;
+    background: var(--accent);
+    transition: width 0.3s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cta {
+    padding: 10px 24px;
+    border: 1.5px solid var(--accent);
+    border-radius: 6px;
+    color: var(--accent) !important;
+    font-size: 0.85rem !important;
+    transition: all 0.3s !important;
+  }
+  .nav-cta:hover { background: var(--accent); color: #fff !important; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { width: 24px; height: 2px; background: var(--text); transition: 0.3s; }
+
+  /* Sections base */
+  section { position: relative; z-index: 1; }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 120px 60px 80px;
+  }
+  .hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(59,130,246,0.1);
+    border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--accent2);
+    margin-bottom: 28px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    animation: fadeDown 0.8s ease both;
+  }
+  .hero-badge .dot {
+    width: 6px; height: 6px;
+    background: var(--accent2);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.4; transform:scale(0.7); } }
+  
+  .hero-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    animation: fadeUp 0.9s 0.1s ease both;
+    margin-bottom: 24px;
+  }
+  .hero-title .line2 {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: block;
+  }
+  .hero-sub {
+    color: var(--muted);
+    font-size: 1.1rem;
+    line-height: 1.7;
+    max-width: 460px;
+    margin-bottom: 44px;
+    animation: fadeUp 0.9s 0.2s ease both;
+  }
+  .hero-btns {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    animation: fadeUp 0.9s 0.3s ease both;
+  }
+  .btn-primary {
+    padding: 14px 32px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 0 30px rgba(59,130,246,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px rgba(59,130,246,0.5); }
+  .btn-secondary {
+    padding: 14px 32px;
+    background: transparent;
+    color: var(--text);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); background: rgba(59,130,246,0.05); }
+
+  /* Hero visual */
+  .hero-visual {
+    position: relative;
+    animation: fadeUp 1s 0.2s ease both;
+  }
+  .hero-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+  }
+  .teacher-info {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 32px;
+  }
+  .teacher-avatar {
+    width: 68px; height: 68px;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #fff;
+    flex-shrink: 0;
+    box-shadow: 0 0 30px rgba(59,130,246,0.4);
+  }
+  .teacher-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+  .teacher-tag {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-top: 4px;
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .stat-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s;
+  }
+  .stat-box:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .stat-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .stat-label { color: var(--muted); font-size: 0.8rem; margin-top: 4px; }
+  .floating-tag {
+    position: absolute;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    animation: floatTag 3s ease-in-out infinite;
+  }
+  .tag1 { top: -20px; right: 20px; animation-delay: 0s; }
+  .tag2 { bottom: -20px; left: 20px; animation-delay: 1.5s; }
+  @keyframes floatTag {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .tag-icon { font-size: 1rem; }
+
+  /* ABOUT */
+  #about {
+    padding: 100px 60px;
+  }
+  .section-inner { max-width: 1200px; margin: 0 auto; }
+  .section-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::before {
+    content: '';
+    width: 30px; height: 1.5px;
+    background: var(--accent);
+    display: block;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-top: 60px;
+  }
+  .about-text p {
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 20px;
+    font-size: 1rem;
+  }
+  .about-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .highlight-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--text);
+    font-size: 0.95rem;
+  }
+  .highlight-item .icon {
+    width: 36px; height: 36px;
+    background: rgba(59,130,246,0.1);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .about-features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 24px;
+    transition: all 0.35s;
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(59,130,246,0.05), transparent);
+    opacity: 0;
+    transition: opacity 0.35s;
+  }
+  .feature-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+  .feature-card:hover::before { opacity: 1; }
+  .feature-icon { font-size: 2rem; margin-bottom: 14px; }
+  .feature-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+  .feature-desc { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+
+  /* COURSES */
+  #courses {
+    padding: 100px 60px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .courses-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 60px;
+  }
+  .course-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 36px 30px;
+    transition: all 0.35s;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+  }
+  .course-card:hover { border-color: var(--accent); transform: translateY(-6px); box-shadow: 0 30px 60px rgba(0,0,0,0.4), 0 0 40px rgba(59,130,246,0.1); }
+  .course-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+  .tag-science { background: rgba(6,182,212,0.15); color: var(--accent2); border: 1px solid rgba(6,182,212,0.25); }
+  .tag-physics { background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.25); }
+  .course-grade {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 6px;
+  }
+  .course-subject {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+  .course-topics {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+  .course-topics li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+  .course-topics li::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  .course-modes {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .mode-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 6px;
+    background: rgba(59,130,246,0.08);
+    border: 1px solid rgba(59,130,246,0.2);
+    color: var(--accent);
+  }
+  .course-card.featured {
+    background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(139,92,246,0.05));
+    border-color: rgba(59,130,246,0.3);
+  }
+  .course-card.featured::after {
+    content: 'Popular';
+    position: absolute;
+    top: 20px; right: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 100px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* MODES */
+  #modes {
+    padding: 100px 60px;
+  }
+  .modes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 60px;
+  }
+  .mode-card {
+    border-radius: 24px;
+    padding: 50px 44px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.35s;
+  }
+  .mode-card:hover { transform: translateY(-6px); }
+  .mode-card.offline {
+    background: linear-gradient(135deg, var(--surface2), var(--surface));
+    border: 1px solid var(--border);
+  }
+  .mode-card.online {
+    background: linear-gradient(135deg, rgba(59,130,246,0.12), rgba(6,182,212,0.06));
+    border: 1px solid rgba(59,130,246,0.25);
+  }
+  .mode-card.online::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+  .mode-emoji { font-size: 3.5rem; margin-bottom: 24px; display: block; }
+  .mode-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 14px;
+  }
+  .mode-desc {
+    color: var(--muted);
+    line-height: 1.7;
+    font-size: 0.95rem;
+    margin-bottom: 28px;
+  }
+  .mode-features { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .mode-features li {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.9rem; color: var(--text);
+  }
+  .mode-features li .check {
+    width: 20px; height: 20px;
+    background: rgba(59,130,246,0.15);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.65rem;
+    color: var(--accent2);
+    flex-shrink: 0;
+  }
+
+  /* TEACHER */
+  #teacher {
+    padding: 100px 60px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .teacher-section {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 70px;
+    align-items: center;
+    margin-top: 60px;
+  }
+  .teacher-portrait {
+    width: 260px; height: 260px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(59,130,246,0.2), rgba(139,92,246,0.2));
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .teacher-initials {
+    font-family: 'Syne', sans-serif;
+    font-size: 5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .teacher-portrait::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 26px;
+    background: linear-gradient(135deg, var(--accent), transparent, var(--accent3));
+    z-index: -1;
+    opacity: 0.5;
+  }
+  .teacher-detail-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .teacher-role {
+    color: var(--accent2);
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .teacher-bio {
+    color: var(--muted);
+    line-height: 1.8;
+    font-size: 1rem;
+    margin-bottom: 36px;
+    max-width: 580px;
+  }
+  .teacher-contact {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .contact-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    padding: 12px 22px;
+    font-size: 0.9rem;
+    color: var(--text);
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .contact-pill:hover { border-color: var(--accent); color: var(--accent); }
+  .contact-pill .cicon { font-size: 1.1rem; }
+
+  /* TESTIMONIALS placeholder area */
+  #contact {
+    padding: 100px 60px;
+  }
+  .contact-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    margin-top: 60px;
+    align-items: start;
+  }
+  .contact-info h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .contact-info p {
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 36px;
+  }
+  .contact-items { display: flex; flex-direction: column; gap: 20px; }
+  .contact-item {
+    display: flex; align-items: center; gap: 18px;
+  }
+  .contact-item-icon {
+    width: 48px; height: 48px;
+    background: rgba(59,130,246,0.1);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+  .contact-item-label { font-size: 0.8rem; color: var(--muted); margin-bottom: 2px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .contact-item-val { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 1.05rem; }
+
+  /* Enquiry form */
+  .enquiry-form {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px;
+  }
+  .enquiry-form h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 28px;
+  }
+  .form-group { margin-bottom: 18px; }
+  .form-group label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+  .form-group select option { background: var(--surface); }
+  .form-group textarea { resize: vertical; min-height: 100px; }
+  .form-submit {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 8px;
+  }
+  .form-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(59,130,246,0.4); }
+  .form-success {
+    display: none;
+    text-align: center;
+    padding: 20px;
+    color: var(--accent2);
+    font-size: 1rem;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 50px 60px 30px;
+  }
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 30px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .footer-tagline { color: var(--muted); font-size: 0.9rem; margin-top: 4px; }
+  .footer-links { display: flex; gap: 32px; }
+  .footer-links a { text-decoration: none; color: var(--muted); font-size: 0.85rem; transition: color 0.3s; }
+  .footer-links a:hover { color: var(--text); }
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .footer-copy { color: var(--muted); font-size: 0.82rem; }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
+
+  /* MOBILE */
+  @media (max-width: 900px) {
+    nav { padding: 18px 24px; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 70px; left: 0; right: 0;
+      background: rgba(10,14,26,0.97);
+      backdrop-filter: blur(20px);
+      padding: 30px 24px;
+      border-bottom: 1px solid var(--border);
+      gap: 24px;
+    }
+
+    #hero { padding: 100px 24px 60px; }
+    .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+    .hero-visual { order: -1; }
+
+    #about, #courses, #modes, #teacher, #contact { padding: 70px 24px; }
+    .about-grid, .courses-grid, .modes-grid, .contact-wrapper { grid-template-columns: 1fr; gap: 30px; }
+    .courses-grid { grid-template-columns: 1fr; }
+    .teacher-section { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+    .teacher-contact { justify-content: center; }
+    .about-features { grid-template-columns: 1fr; }
+    footer { padding: 40px 24px 24px; }
+    .footer-inner, .footer-bottom { flex-direction: column; align-items: flex-start; }
+    .footer-links { flex-wrap: wrap; gap: 16px; }
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none; }
+  }
+
+  /* Scroll progress */
+  #progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2.5px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    z-index: 2000;
+    transition: width 0.1s;
+    box-shadow: 0 0 10px var(--accent);
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar" style="width:0%"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">DIST<span>ANCE</span></div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#courses">Courses</a></li>
+    <li><a href="#modes">Modes</a></li>
+    <li><a href="#teacher">Teacher</a></li>
+    <li><a href="#contact" class="nav-cta">Enquire Now</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <div class="dot"></div>
+        Admissions Open 2025–26
+      </div>
+      <h1 class="hero-title">
+        Learn Science.<br>
+        <span class="line2">Go the Distance.</span>
+      </h1>
+      <p class="hero-sub">
+        Expert coaching for Class 9–10 Science and Class 11–12 Physics. 
+        Personalised attention, proven results, available both online and offline.
+      </p>
+      <div class="hero-btns">
+        <a href="#contact" class="btn-primary">Enroll Now</a>
+        <a href="#courses" class="btn-secondary">Explore Courses</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="floating-tag tag1">
+        <span class="tag-icon">🌐</span> Online & Offline
+      </div>
+      <div class="hero-card">
+        <div class="teacher-info">
+          <div class="teacher-avatar">GS</div>
+          <div>
+            <div class="teacher-name">Gurkirat Singh</div>
+            <div class="teacher-tag">Lead Science & Physics Educator</div>
+          </div>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-box">
+            <div class="stat-val">9–10</div>
+            <div class="stat-label">Science Classes</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">11–12</div>
+            <div class="stat-label">Physics Classes</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">2</div>
+            <div class="stat-label">Learning Modes</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">100%</div>
+            <div class="stat-label">Dedication</div>
+          </div>
+        </div>
+      </div>
+      <div class="floating-tag tag2">
+        <span class="tag-icon">⚛️</span> Expert Physics Coaching
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-label">About Us</div>
+    <h2 class="section-title">Why Choose Distance?</h2>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>
+          Distance Coaching Center was founded with one mission — to bridge the gap between students and their full potential in Science and Physics. We believe that quality education should be accessible, engaging, and results-driven.
+        </p>
+        <p>
+          Our small batch sizes ensure every student receives focused attention. Whether you're preparing for board exams or building a foundation for competitive exams, we've got you covered.
+        </p>
+        <div class="about-highlights">
+          <div class="highlight-item">
+            <div class="icon">🎯</div>
+            Concept-first approach for deep understanding
+          </div>
+          <div class="highlight-item">
+            <div class="icon">📚</div>
+            Chapter-wise notes and practice sheets
+          </div>
+          <div class="highlight-item">
+            <div class="icon">📊</div>
+            Regular tests and performance tracking
+          </div>
+          <div class="highlight-item">
+            <div class="icon">💬</div>
+            Doubt-clearing sessions available
+          </div>
+        </div>
+      </div>
+      <div class="about-features reveal">
+        <div class="feature-card">
+          <div class="feature-icon">🏆</div>
+          <div class="feature-name">Board Exam Focus</div>
+          <div class="feature-desc">Curriculum aligned with CBSE/PSEB board patterns with past paper practice.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <div class="feature-name">Small Batches</div>
+          <div class="feature-desc">Limited seats ensure personalized attention for every student.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌍</div>
+          <div class="feature-name">Flexible Learning</div>
+          <div class="feature-desc">Attend from your city or from the comfort of your home — your choice.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📈</div>
+          <div class="feature-name">Proven Results</div>
+          <div class="feature-desc">Students who understand concepts, not just formulas — real academic growth.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COURSES -->
+<section id="courses">
+  <div class="section-inner">
+    <div class="section-label reveal">Our Courses</div>
+    <h2 class="section-title reveal">What We Teach</h2>
+    <div class="courses-grid">
+      <div class="course-card reveal">
+        <div class="course-tag tag-science">Science</div>
+        <div class="course-grade">Class 9</div>
+        <div class="course-subject">General Science (Physics, Chemistry, Biology)</div>
+        <ul class="course-topics">
+          <li>Matter in Our Surroundings</li>
+          <li>Motion & Force Laws</li>
+          <li>Work, Energy & Power</li>
+          <li>Sound & Electricity</li>
+          <li>Life Processes & Natural Phenomena</li>
+        </ul>
+        <div class="course-modes">
+          <span class="mode-badge">🏫 Offline</span>
+          <span class="mode-badge">💻 Online</span>
+        </div>
+      </div>
+
+      <div class="course-card featured reveal">
+        <div class="course-tag tag-science">Science</div>
+        <div class="course-grade">Class 10</div>
+        <div class="course-subject">General Science — Board Exam Ready</div>
+        <ul class="course-topics">
+          <li>Chemical Reactions & Acids/Bases</li>
+          <li>Light — Reflection & Refraction</li>
+          <li>Electricity & Magnetic Effects</li>
+          <li>Life Processes & Heredity</li>
+          <li>Board Exam Revision & Mock Tests</li>
+        </ul>
+        <div class="course-modes">
+          <span class="mode-badge">🏫 Offline</span>
+          <span class="mode-badge">💻 Online</span>
+        </div>
+      </div>
+
+      <div class="course-card reveal">
+        <div class="course-tag tag-physics">Physics</div>
+        <div class="course-grade">Class 11–12</div>
+        <div class="course-subject">Advanced Physics</div>
+        <ul class="course-topics">
+          <li>Mechanics & Kinematics</li>
+          <li>Thermodynamics & Waves</li>
+          <li>Electrostatics & Current Electricity</li>
+          <li>Optics & Modern Physics</li>
+          <li>Numerical Problem Solving</li>
+        </ul>
+        <div class="course-modes">
+          <span class="mode-badge">🏫 Offline</span>
+          <span class="mode-badge">💻 Online</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODES -->
+<section id="modes">
+  <div class="section-inner">
+    <div class="section-label reveal">Learning Modes</div>
+    <h2 class="section-title reveal">Online & Offline —<br>You Choose</h2>
+    <div class="modes-grid">
+      <div class="mode-card offline reveal">
+        <span class="mode-emoji">🏫</span>
+        <div class="mode-title">Offline Classes</div>
+        <div class="mode-desc">Join us in person for an immersive, classroom experience. Face-to-face interaction with the teacher makes concept clarity faster and deeper.</div>
+        <ul class="mode-features">
+          <li><span class="check">✓</span> Live classroom sessions</li>
+          <li><span class="check">✓</span> Printed notes & worksheets</li>
+          <li><span class="check">✓</span> Immediate doubt resolution</li>
+          <li><span class="check">✓</span> Regular chapter-wise tests</li>
+          <li><span class="check">✓</span> Peer learning environment</li>
+        </ul>
+      </div>
+      <div class="mode-card online reveal">
+        <span class="mode-emoji">💻</span>
+        <div class="mode-title">Online Classes</div>
+        <div class="mode-desc">Study from anywhere without compromising on quality. Our online sessions are live, interactive, and just as engaging as classroom learning.</div>
+        <ul class="mode-features">
+          <li><span class="check">✓</span> Live interactive sessions</li>
+          <li><span class="check">✓</span> Digital notes & PDFs</li>
+          <li><span class="check">✓</span> Recorded lectures for revision</li>
+          <li><span class="check">✓</span> Online tests & assignments</li>
+          <li><span class="check">✓</span> Direct WhatsApp doubt support</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEACHER -->
+<section id="teacher">
+  <div class="section-inner">
+    <div class="section-label reveal">Meet Your Educator</div>
+    <h2 class="section-title reveal">The Person Behind Distance</h2>
+    <div class="teacher-section reveal">
+      <div class="teacher-portrait">
+        <div class="teacher-initials">GS</div>
+      </div>
+      <div>
+        <div class="teacher-detail-name">Gurkirat Singh</div>
+        <div class="teacher-role">Science & Physics Educator · Founder, Distance</div>
+        <div class="teacher-bio">
+          With a passion for making Science and Physics accessible to every student, Gurkirat Singh founded Distance Coaching Center with the belief that every child can excel when given the right guidance. His teaching style focuses on building strong conceptual foundations, solving real-world problems, and preparing students thoroughly for board examinations.
+          <br><br>
+          Teaching Class 9–10 Science and Class 11–12 Physics, he brings clarity to even the most challenging topics through structured lessons, examples, and practice.
+        </div>
+        <div class="teacher-contact">
+          <a href="tel:7627872055" class="contact-pill">
+            <span class="cicon">📞</span> +91 76278 72055
+          </a>
+          <a href="https://wa.me/917627872055" class="contact-pill" target="_blank">
+            <span class="cicon">💬</span> WhatsApp Us
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-label reveal">Get in Touch</div>
+    <h2 class="section-title reveal">Start Your Journey Today</h2>
+    <div class="contact-wrapper">
+      <div class="contact-info reveal">
+        <h3>We'd love to hear from you</h3>
+        <p>Have questions about courses, fees, batch timings, or anything else? Reach out and we'll get back to you quickly.</p>
+        <div class="contact-items">
+          <div class="contact-item">
+            <div class="contact-item-icon">📞</div>
+            <div>
+              <div class="contact-item-label">Phone / WhatsApp</div>
+              <div class="contact-item-val">+91 76278 72055</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">👨‍🏫</div>
+            <div>
+              <div class="contact-item-label">Educator</div>
+              <div class="contact-item-val">Gurkirat Singh</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">📚</div>
+            <div>
+              <div class="contact-item-label">Classes Offered</div>
+              <div class="contact-item-val">9–10 Science · 11–12 Physics</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">🌐</div>
+            <div>
+              <div class="contact-item-label">Learning Modes</div>
+              <div class="contact-item-val">Offline & Online Both</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="enquiry-form reveal">
+        <h3>Send an Enquiry</h3>
+        <div class="form-group">
+          <label>Student Name</label>
+          <input type="text" id="fname" placeholder="Enter full name">
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" id="fphone" placeholder="+91 XXXXX XXXXX">
+        </div>
+        <div class="form-group">
+          <label>Class Interested In</label>
+          <select id="fclass">
+            <option value="">Select a course</option>
+            <option>Class 9 — Science</option>
+            <option>Class 10 — Science</option>
+            <option>Class 11 — Physics</option>
+            <option>Class 12 — Physics</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Preferred Mode</label>
+          <select id="fmode">
+            <option value="">Select mode</option>
+            <option>Offline (In-person)</option>
+            <option>Online</option>
+            <option>Not decided yet</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Message (Optional)</label>
+          <textarea id="fmsg" placeholder="Any questions or specific requirements..."></textarea>
+        </div>
+        <button class="form-submit" onclick="submitForm()">Send Enquiry →</button>
+        <div class="form-success" id="formSuccess">
+          ✅ Thank you! We'll contact you shortly on WhatsApp.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">DISTANCE</div>
+      <div class="footer-tagline">Science & Physics Coaching · Offline & Online</div>
+    </div>
+    <div class="footer-links">
+      <a href="#about">About</a>
+      <a href="#courses">Courses</a>
+      <a href="#modes">Modes</a>
+      <a href="#teacher">Teacher</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
+    <div class="footer-copy">© 2025 Distance Coaching Center · Gurkirat Singh · +91 76278 72055</div>
+    <div class="footer-copy">Class 9–10 Science · Class 11–12 Physics</div>
+  </div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx - 5 + 'px';
+    cursor.style.top = my - 5 + 'px';
+  });
+  function animateRing() {
+    rx += (mx - rx - 18) * 0.12;
+    ry += (my - ry - 18) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+  document.querySelectorAll('a, button, .course-card, .stat-box').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'scale(2.5)';
+      ring.style.transform = 'scale(1.4)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'scale(1)';
+      ring.style.transform = 'scale(1)';
+    });
+  });
+
+  // Scroll progress
+  window.addEventListener('scroll', () => {
+    const p = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    document.getElementById('progress-bar').style.width = p + '%';
+  });
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Nav mobile
+  function toggleNav() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+
+  // Nav scroll effect
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    nav.style.boxShadow = window.scrollY > 60 ? '0 4px 40px rgba(0,0,0,0.4)' : 'none';
+  });
+
+  // Form submit
+  function submitForm() {
+    const name = document.getElementById('fname').value;
+    const phone = document.getElementById('fphone').value;
+    const cls = document.getElementById('fclass').value;
+    const mode = document.getElementById('fmode').value;
+    const msg = document.getElementById('fmsg').value;
+
+    if (!name || !phone || !cls || !mode) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    // Build WhatsApp message
+    const waMsg = encodeURIComponent(
+      `Hi Gurkirat Sir! 👋\n\n*New Enquiry from Distance Website*\n\n*Name:* ${name}\n*Phone:* ${phone}\n*Course:* ${cls}\n*Mode:* ${mode}\n*Message:* ${msg || 'No additional message'}`
+    );
+    window.open(`https://wa.me/917627872055?text=${waMsg}`, '_blank');
+    document.getElementById('formSuccess').style.display = 'block';
+  }
+
+  // Active nav link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.id;
+    });
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--text)' : '';
+    });
+  });
+</script>
+</body>
+</html>
