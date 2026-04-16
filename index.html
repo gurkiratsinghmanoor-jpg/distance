@@ -871,6 +871,134 @@
     .cursor, .cursor-ring { display: none; }
   }
 
+  /* NOTES SECTION */
+  #notes {
+    padding: 100px 60px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .notes-intro {
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.75;
+    max-width: 600px;
+    margin-bottom: 50px;
+  }
+  .notes-free-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(34,197,94,0.1);
+    border: 1px solid rgba(34,197,94,0.25);
+    border-radius: 100px;
+    padding: 6px 18px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #4ade80;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    display: inline-flex;
+  }
+  .notes-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+  .notes-tab {
+    padding: 9px 22px;
+    border-radius: 8px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .notes-tab.active, .notes-tab:hover {
+    border-color: var(--accent);
+    color: var(--text);
+    background: rgba(59,130,246,0.08);
+  }
+  .notes-tab.active { color: var(--accent); }
+  .notes-panel { display: none; }
+  .notes-panel.active { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 20px; }
+  .note-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 26px 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .note-card::after {
+    content: '↗';
+    position: absolute;
+    top: 18px; right: 18px;
+    font-size: 1rem;
+    color: var(--muted);
+    transition: all 0.3s;
+  }
+  .note-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.3); }
+  .note-card:hover::after { color: var(--accent); top: 14px; right: 14px; }
+  .note-icon {
+    width: 46px; height: 46px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+  .ni-blue { background: rgba(59,130,246,0.12); }
+  .ni-purple { background: rgba(139,92,246,0.12); }
+  .ni-cyan { background: rgba(6,182,212,0.12); }
+  .ni-orange { background: rgba(251,146,60,0.12); }
+  .note-title { font-weight: 600; font-size: 0.95rem; margin-bottom: 5px; }
+  .note-meta { font-size: 0.78rem; color: var(--muted); }
+  .note-free {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(34,197,94,0.12);
+    color: #4ade80;
+    border: 1px solid rgba(34,197,94,0.2);
+    margin-left: 6px;
+    letter-spacing: 0.06em;
+  }
+  .notes-cta-bar {
+    margin-top: 40px;
+    padding: 28px 32px;
+    background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(6,182,212,0.05));
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .notes-cta-bar p { color: var(--muted); font-size: 0.95rem; max-width: 500px; }
+  .notes-cta-bar strong { color: var(--text); }
+
+  @media (max-width: 900px) {
+    #notes { padding: 70px 24px; }
+    .notes-panel.active { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .notes-panel.active { grid-template-columns: 1fr; }
+  }
+
   /* Scroll progress */
   #progress-bar {
     position: fixed;
@@ -900,6 +1028,7 @@
     <li><a href="#courses">Courses</a></li>
     <li><a href="#modes">Modes</a></li>
     <li><a href="#teacher">Teacher</a></li>
+    <li><a href="#notes">Notes</a></li>
     <li><a href="#contact" class="nav-cta">Enquire Now</a></li>
   </ul>
   <div class="hamburger" id="hamburger" onclick="toggleNav()">
@@ -920,12 +1049,11 @@
         <span class="line2">Go the Distance.</span>
       </h1>
       <p class="hero-sub">
-        Expert coaching for Class 9–10 Science and Class 11–12 Physics. 
-        Personalised attention, proven results, available both online and offline.
+        Expert coaching for Class 9–10 Science and Class 11–12 Physics — including JEE &amp; NEET preparation. Personalised attention, proven results, online and offline.
       </p>
       <div class="hero-btns">
         <a href="#contact" class="btn-primary">Enroll Now</a>
-        <a href="#courses" class="btn-secondary">Explore Courses</a>
+        <a href="#notes" class="btn-secondary">📄 Free Notes</a>
       </div>
     </div>
 
@@ -951,8 +1079,8 @@
             <div class="stat-label">Physics Classes</div>
           </div>
           <div class="stat-box">
-            <div class="stat-val">2</div>
-            <div class="stat-label">Learning Modes</div>
+            <div class="stat-val">JEE</div>
+            <div class="stat-label">/ NEET Physics</div>
           </div>
           <div class="stat-box">
             <div class="stat-val">100%</div>
@@ -1081,6 +1209,45 @@
           <span class="mode-badge">💻 Online</span>
         </div>
       </div>
+
+      <div class="course-card reveal" style="grid-column: 1 / -1; background: linear-gradient(135deg, rgba(251,146,60,0.06), rgba(239,68,68,0.04)); border-color: rgba(251,146,60,0.25);">
+        <div style="display:grid; grid-template-columns: auto 1fr; gap: 40px; align-items:center;">
+          <div>
+            <div class="course-tag" style="background:rgba(251,146,60,0.15);color:#fb923c;border:1px solid rgba(251,146,60,0.3);">JEE / NEET</div>
+            <div class="course-grade" style="font-size:2rem;">Physics for<br>Competitive Exams</div>
+            <div class="course-subject">Class 11 &amp; 12 · JEE Main · JEE Advanced · NEET</div>
+          </div>
+          <div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+              <div>
+                <div style="font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">JEE Topics</div>
+                <ul class="course-topics">
+                  <li>Mechanics — Laws of Motion, Rotational</li>
+                  <li>Waves, Sound & Oscillations</li>
+                  <li>Electrostatics, Magnetism & EMI</li>
+                  <li>Modern Physics — Atoms & Nuclei</li>
+                  <li>JEE-level Numerical Drills</li>
+                </ul>
+              </div>
+              <div>
+                <div style="font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">NEET Focus</div>
+                <ul class="course-topics">
+                  <li>Complete NCERT Physics mastery</li>
+                  <li>High-weightage chapter deep dives</li>
+                  <li>MCQ strategy & time management</li>
+                  <li>Previous year paper analysis</li>
+                  <li>Assertion-Reason type questions</li>
+                </ul>
+              </div>
+            </div>
+            <div class="course-modes">
+              <span class="mode-badge" style="background:rgba(251,146,60,0.1);border-color:rgba(251,146,60,0.3);color:#fb923c;">🏫 Offline</span>
+              <span class="mode-badge" style="background:rgba(251,146,60,0.1);border-color:rgba(251,146,60,0.3);color:#fb923c;">💻 Online</span>
+              <span class="mode-badge" style="background:rgba(251,146,60,0.1);border-color:rgba(251,146,60,0.3);color:#fb923c;">📄 Free Notes Available</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1132,9 +1299,9 @@
         <div class="teacher-detail-name">Gurkirat Singh</div>
         <div class="teacher-role">Science & Physics Educator · Founder, Distance</div>
         <div class="teacher-bio">
-          With a passion for making Science and Physics accessible to every student, Gurkirat Singh founded Distance Coaching Center with the belief that every child can excel when given the right guidance. His teaching style focuses on building strong conceptual foundations, solving real-world problems, and preparing students thoroughly for board examinations.
+          With a passion for making Science and Physics accessible to every student, Gurkirat Singh founded Distance Coaching Center with the belief that every child can excel when given the right guidance. His teaching style focuses on building strong conceptual foundations, solving real-world problems, and preparing students for board and competitive examinations.
           <br><br>
-          Teaching Class 9–10 Science and Class 11–12 Physics, he brings clarity to even the most challenging topics through structured lessons, examples, and practice.
+          Teaching Class 9–10 Science and Class 11–12 Physics — including JEE Main, JEE Advanced, and NEET preparation — he brings clarity to even the most challenging topics through structured lessons, problem-solving sessions, and dedicated practice.
         </div>
         <div class="teacher-contact">
           <a href="tel:7627872055" class="contact-pill">
@@ -1145,6 +1312,241 @@
           </a>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- FREE NOTES -->
+<section id="notes">
+  <div class="section-inner">
+    <div class="notes-free-badge reveal">🎁 Completely Free</div>
+    <div class="section-label reveal">Study Material</div>
+    <h2 class="section-title reveal">Free Notes & Resources</h2>
+    <p class="notes-intro reveal">
+      Access chapter-wise notes, formula sheets, and solved examples — all completely free. 
+      Click any topic below to open it directly in Google Drive. No login required.
+    </p>
+
+    <div class="notes-tabs reveal">
+      <button class="notes-tab active" onclick="switchTab('class9')">Class 9 Science</button>
+      <button class="notes-tab" onclick="switchTab('class10')">Class 10 Science</button>
+      <button class="notes-tab" onclick="switchTab('class11')">Class 11 Physics</button>
+      <button class="notes-tab" onclick="switchTab('class12')">Class 12 Physics</button>
+      <button class="notes-tab" onclick="switchTab('jeeneet')">JEE / NEET Physics</button>
+    </div>
+
+    <!-- CLASS 9 -->
+    <div class="notes-panel active" id="panel-class9">
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-cyan">🔬</div>
+        <div>
+          <div class="note-title">Matter in Our Surroundings <span class="note-free">FREE</span></div>
+          <div class="note-meta">Chapter 1 · Notes + Solved Examples</div>
+        </div>
+      </a>
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-blue">⚡</div>
+        <div>
+          <div class="note-title">Motion <span class="note-free">FREE</span></div>
+          <div class="note-meta">Chapter 8 · Formula Sheet + Numericals</div>
+        </div>
+      </a>
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-purple">🌊</div>
+        <div>
+          <div class="note-title">Force & Laws of Motion <span class="note-free">FREE</span></div>
+          <div class="note-meta">Chapter 9 · Concept Notes + MCQs</div>
+        </div>
+      </a>
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-orange">⚙️</div>
+        <div>
+          <div class="note-title">Work, Energy & Power <span class="note-free">FREE</span></div>
+          <div class="note-meta">Chapter 10 · Detailed Notes</div>
+        </div>
+      </a>
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-cyan">🔊</div>
+        <div>
+          <div class="note-title">Sound <span class="note-free">FREE</span></div>
+          <div class="note-meta">Chapter 12 · Short Notes + PYQs</div>
+        </div>
+      </a>
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-blue">💡</div>
+        <div>
+          <div class="note-title">All Chapters Bundle <span class="note-free">FREE</span></div>
+          <div class="note-meta">Complete Class 9 Science · Full Folder</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- CLASS 10 -->
+    <div class="notes-panel" id="panel-class10">
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-cyan">💡</div>
+        <div>
+          <div class="note-title">Light — Reflection & Refraction <span class="note-free">FREE</span></div>
+          <div class="note-meta">Chapter 10 · Ray Diagrams + Numericals</div>
+        </div>
+      </a>
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-blue">⚡</div>
+        <div>
+          <div class="note-title">Electricity <span class="note-free">FREE</span></div>
+          <div class="note-meta">Chapter 12 · Formula Sheet + Circuits</div>
+        </div>
+      </a>
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-purple">🧲</div>
+        <div>
+          <div class="note-title">Magnetic Effects of Current <span class="note-free">FREE</span></div>
+          <div class="note-meta">Chapter 13 · Concept Notes</div>
+        </div>
+      </a>
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-orange">🌍</div>
+        <div>
+          <div class="note-title">Board Exam Revision Pack <span class="note-free">FREE</span></div>
+          <div class="note-meta">All Physics Topics · Quick Revision + PYQs</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- CLASS 11 -->
+    <div class="notes-panel" id="panel-class11">
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-blue">📐</div>
+        <div>
+          <div class="note-title">Units & Measurements <span class="note-free">FREE</span></div>
+          <div class="note-meta">Chapter 1 · Notes + Formula List</div>
+        </div>
+      </a>
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-cyan">🚀</div>
+        <div>
+          <div class="note-title">Kinematics <span class="note-free">FREE</span></div>
+          <div class="note-meta">Chapter 3 & 4 · Graphs + Numericals</div>
+        </div>
+      </a>
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-purple">⚖️</div>
+        <div>
+          <div class="note-title">Laws of Motion <span class="note-free">FREE</span></div>
+          <div class="note-meta">Chapter 5 · FBD + Solved Problems</div>
+        </div>
+      </a>
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-orange">🌡️</div>
+        <div>
+          <div class="note-title">Thermodynamics <span class="note-free">FREE</span></div>
+          <div class="note-meta">Chapter 12 · Concept Notes + PYQs</div>
+        </div>
+      </a>
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-cyan">🌀</div>
+        <div>
+          <div class="note-title">Oscillations & Waves <span class="note-free">FREE</span></div>
+          <div class="note-meta">Chapter 14 & 15 · Complete Notes</div>
+        </div>
+      </a>
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-blue">📦</div>
+        <div>
+          <div class="note-title">Class 11 Full Bundle <span class="note-free">FREE</span></div>
+          <div class="note-meta">All Chapters · Google Drive Folder</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- CLASS 12 -->
+    <div class="notes-panel" id="panel-class12">
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-blue">⚡</div>
+        <div>
+          <div class="note-title">Electrostatics <span class="note-free">FREE</span></div>
+          <div class="note-meta">Chapter 1 · Concept + Numericals</div>
+        </div>
+      </a>
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-purple">🔋</div>
+        <div>
+          <div class="note-title">Current Electricity <span class="note-free">FREE</span></div>
+          <div class="note-meta">Chapter 3 · Circuits + Formula Sheet</div>
+        </div>
+      </a>
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-cyan">💡</div>
+        <div>
+          <div class="note-title">Ray Optics <span class="note-free">FREE</span></div>
+          <div class="note-meta">Chapter 9 · Diagrams + Mirror/Lens formula</div>
+        </div>
+      </a>
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-orange">⚛️</div>
+        <div>
+          <div class="note-title">Modern Physics <span class="note-free">FREE</span></div>
+          <div class="note-meta">Chapter 12 & 13 · Atoms + Nuclei Notes</div>
+        </div>
+      </a>
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-blue">📦</div>
+        <div>
+          <div class="note-title">Class 12 Full Bundle <span class="note-free">FREE</span></div>
+          <div class="note-meta">All Chapters · Google Drive Folder</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- JEE / NEET -->
+    <div class="notes-panel" id="panel-jeeneet">
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-orange">🎯</div>
+        <div>
+          <div class="note-title">JEE Physics Formula Sheet <span class="note-free">FREE</span></div>
+          <div class="note-meta">All Chapters · Quick Reference PDF</div>
+        </div>
+      </a>
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-blue">📊</div>
+        <div>
+          <div class="note-title">JEE Mechanics — Rotational Motion <span class="note-free">FREE</span></div>
+          <div class="note-meta">High-weightage · Notes + PYQs (2015–2024)</div>
+        </div>
+      </a>
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-purple">🌊</div>
+        <div>
+          <div class="note-title">JEE Waves & SHM <span class="note-free">FREE</span></div>
+          <div class="note-meta">Important for both JEE & NEET · Concept Notes</div>
+        </div>
+      </a>
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-cyan">🏥</div>
+        <div>
+          <div class="note-title">NEET Physics — High Weightage Topics <span class="note-free">FREE</span></div>
+          <div class="note-meta">Chapter-wise priority list + NCERT Highlights</div>
+        </div>
+      </a>
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-orange">📝</div>
+        <div>
+          <div class="note-title">NEET PYQ Physics (2018–2024) <span class="note-free">FREE</span></div>
+          <div class="note-meta">Solved Previous Year Questions with Explanations</div>
+        </div>
+      </a>
+      <a class="note-card" href="https://drive.google.com/drive/folders/YOUR_FOLDER_ID" target="_blank">
+        <div class="note-icon ni-blue">⚡</div>
+        <div>
+          <div class="note-title">JEE + NEET Full Physics Pack <span class="note-free">FREE</span></div>
+          <div class="note-meta">Complete Resource Folder · Google Drive</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="notes-cta-bar reveal">
+      <p>📌 <strong>How to use:</strong> Click any card to open the notes in Google Drive. All files are view-only and free — no account needed. To get the latest uploads, message us on WhatsApp.</p>
+      <a href="https://wa.me/917627872055?text=Hi%20Gurkirat%20Sir!%20I%20want%20the%20latest%20free%20notes%20from%20Distance%20Coaching." target="_blank" class="btn-primary" style="white-space:nowrap;">💬 Get Latest Notes</a>
     </div>
   </div>
 </section>
@@ -1205,8 +1607,12 @@
             <option value="">Select a course</option>
             <option>Class 9 — Science</option>
             <option>Class 10 — Science</option>
-            <option>Class 11 — Physics</option>
-            <option>Class 12 — Physics</option>
+            <option>Class 11 — Physics (Board)</option>
+            <option>Class 12 — Physics (Board)</option>
+            <option>Class 11 — Physics (JEE)</option>
+            <option>Class 12 — Physics (JEE)</option>
+            <option>Class 11 — Physics (NEET)</option>
+            <option>Class 12 — Physics (NEET)</option>
           </select>
         </div>
         <div class="form-group">
@@ -1236,19 +1642,20 @@
   <div class="footer-inner">
     <div>
       <div class="footer-logo">DISTANCE</div>
-      <div class="footer-tagline">Science & Physics Coaching · Offline & Online</div>
+      <div class="footer-tagline">Science & Physics · JEE / NEET · Free Notes · Offline & Online</div>
     </div>
     <div class="footer-links">
       <a href="#about">About</a>
       <a href="#courses">Courses</a>
       <a href="#modes">Modes</a>
+      <a href="#notes">Notes</a>
       <a href="#teacher">Teacher</a>
       <a href="#contact">Contact</a>
     </div>
   </div>
   <div class="footer-bottom" style="max-width:1200px;margin:0 auto;">
     <div class="footer-copy">© 2025 Distance Coaching Center · Gurkirat Singh · +91 76278 72055</div>
-    <div class="footer-copy">Class 9–10 Science · Class 11–12 Physics</div>
+    <div class="footer-copy">Class 9–10 Science · Class 11–12 Physics · JEE / NEET</div>
   </div>
 </footer>
 
@@ -1328,6 +1735,14 @@
     );
     window.open(`https://wa.me/917627872055?text=${waMsg}`, '_blank');
     document.getElementById('formSuccess').style.display = 'block';
+  }
+
+  // Notes tab switching
+  function switchTab(id) {
+    document.querySelectorAll('.notes-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.notes-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('panel-' + id).classList.add('active');
+    event.target.classList.add('active');
   }
 
   // Active nav link on scroll
